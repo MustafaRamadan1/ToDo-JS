@@ -56,21 +56,7 @@ ourList.addEventListener('click', function(e){
 
     else if (e.target.tagName == "SPAN")
     {
-        let value = e.target.parentElement.innerText.slice(0,-1);
-      
-       let ourArray = JSON.parse(localStorage.getItem("taskArray"));
-      
-       let index = ourArray.filter((e, i)=> {
-        if (e.value == value) 
-        {
-            console.log(e.value);
-            console.log(i);
-        }
-       });
-        e.target.parentElement.remove();
-        ourArray.splice(index, 1);
-        localStorage.setItem(`taskArray`, JSON.stringify(ourArray));
-    
+        removeElement(e);
     }
 })
 
@@ -88,4 +74,30 @@ function saveData(){
      localStorage.setItem(`taskArray`, JSON.stringify(ourArray));
      numberTask++;
      input.value = "";
+}
+
+
+function removeElement(e){
+
+    let value = e.target.parentElement.innerText.slice(0,-1);
+      
+       let ourArray = JSON.parse(localStorage.getItem("taskArray"));
+       
+      
+       let fliteredArray = [];
+       
+       for (let i in ourArray) {
+       
+        if (ourArray[i].value.trim() != value.trim() ) {
+    
+            fliteredArray.push(ourArray[i]);
+        }
+
+
+        e.target.parentElement.remove();
+
+
+        localStorage.setItem(`taskArray`, JSON.stringify(fliteredArray));
+
+}
 }
