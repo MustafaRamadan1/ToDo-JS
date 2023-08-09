@@ -7,7 +7,8 @@ let LoadingValu = "";
 let LoadingElement = "";
 let LoadingSpan = "";
 let completedArray = [];
-
+window.onload = function (){
+    
 if (localStorage.length > 0)
 {
     for (let i = 0; i < localStorage.length; i++)
@@ -25,14 +26,15 @@ if (localStorage.length > 0)
     numberTask = localStorage.length;
 }
 
+}
 
 input.addEventListener('change', function (){
-    inputValue = input.value;
+    inputValue = input.value.trim();
 });
 
 ourBtn.addEventListener('click', function(){
 
-   if (input.value == ""){
+   if (input.value.trim() == ""){
    {
     alert("Please enter a value");
    }

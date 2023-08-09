@@ -143,3 +143,14 @@ ul li span:hover
 {
     background: #edeef0;
 }
+
+
+.completed
+{
+    width: 100%;
+    max-width: 540px;
+    background-color: #fff;
+    margin: 10px auto  20px;
+    padding: 40px 30px 70px;
+    border-radius: 15px;
+}
