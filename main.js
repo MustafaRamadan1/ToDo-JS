@@ -2,18 +2,20 @@ let input = document.getElementById('input-box');
 let ourList = document.getElementById('list-container');
 let ourBtn = document.getElementById('add');
 let inputValue = "";
-let numberTask = 0;
+let numberTask = localStorage.length;
 let LoadingValu = "";
 let LoadingElement = "";
 let LoadingSpan = "";
-let completedArray = [];
-window.onload = function (){
-    
+let ourArray = [];
+let tasksArray =[];
+
+
 if (localStorage.length > 0)
 {
-    for (let i = 0; i < localStorage.length; i++)
+    let tasksArray = JSON.parse(localStorage.getItem('taskArray'));
+    for (let i = 0; i < tasksArray.length; i++)
     {
-       LoadingValu = localStorage.getItem(`task${i}`);
+       LoadingValu = tasksArray[i].value;
        LoadingElement = document.createElement('li');
        LoadingSpan = document.createElement('span');
        LoadingSpan.innerHTML = "\u00d7";
@@ -22,14 +24,11 @@ if (localStorage.length > 0)
        ourList.appendChild(LoadingElement);
         
     }
-
-    numberTask = localStorage.length;
 }
 
-}
 
 input.addEventListener('change', function (){
-    inputValue = input.value.trim();
+    inputValue = input.value;
 });
 
 ourBtn.addEventListener('click', function(){
@@ -41,21 +40,7 @@ ourBtn.addEventListener('click', function(){
 }
    else
 {
-    
-    let ourValue = document.createTextNode(inputValue);
-    let  ourItem = document.createElement('li');
-    let ourSpan = document.createElement('span');
-    ourSpan.innerHTML = "\u00d7";
-     ourItem.appendChild(ourValue);
-     ourItem.appendChild(ourSpan);
-     ourList.appendChild(ourItem);
-     console.log(ourItem);
-
-     localStorage.setItem(`task${numberTask}`, inputValue);
-     numberTask++;
-     input.value = "";
-     
-
+    saveData();
 }
 
 })
@@ -71,37 +56,36 @@ ourList.addEventListener('click', function(e){
 
     else if (e.target.tagName == "SPAN")
     {
-        e.target.parentElement.remove();
-
         let value = e.target.parentElement.innerText.slice(0,-1);
-        let key;
-        for (let i in localStorage)
+      
+       let ourArray = JSON.parse(localStorage.getItem("taskArray"));
+      
+       let index = ourArray.filter((e, i)=> {
+        if (e.value == value) 
         {
-            if (localStorage.getItem(i) == value)
-            {
-                key = i;
-            }
-
+            console.log(e.value);
+            console.log(i);
         }
-
-        localStorage.removeItem(key);
+       });
+        e.target.parentElement.remove();
+        ourArray.splice(index, 1);
+        localStorage.setItem(`taskArray`, JSON.stringify(ourArray));
+    
     }
 })
 
 
 
-
-
-// if (ourItems)
-// {
-//     for (let i =0; i< ourItems.length; i++) {
-
-//         ourItems[i].addEventListener('click', function(){
-    
-//             this.classList.toggleClass('checked');
-//         })
-//     }
-// }
-
-
-
+function saveData(){
+    let ourValue = document.createTextNode(inputValue);
+    let  ourItem = document.createElement('li');
+    let ourSpan = document.createElement('span');
+    ourSpan.innerHTML = "\u00d7";
+     ourItem.appendChild(ourValue);
+     ourItem.appendChild(ourSpan);
+     ourList.appendChild(ourItem);
+     ourArray.push({id: `${numberTask}`, value: inputValue});
+     localStorage.setItem(`taskArray`, JSON.stringify(ourArray));
+     numberTask++;
+     input.value = "";
+}
