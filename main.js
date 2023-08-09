@@ -3,11 +3,10 @@ let ourList = document.getElementById('list-container');
 let ourBtn = document.getElementById('add');
 let inputValue = "";
 let numberTask = 0;
-
 let LoadingValu = "";
 let LoadingElement = "";
 let LoadingSpan = "";
-
+let completedArray = [];
 
 if (localStorage.length > 0)
 {
@@ -52,9 +51,11 @@ ourBtn.addEventListener('click', function(){
 
      localStorage.setItem(`task${numberTask}`, inputValue);
      numberTask++;
+     input.value = "";
      
 
 }
+
 })
 
 
