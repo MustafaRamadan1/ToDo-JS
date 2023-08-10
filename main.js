@@ -7,7 +7,9 @@ let LoadingValu = "";
 let LoadingElement = "";
 let LoadingSpan = "";
 let ourArray = [];
-let tasksArray =[];
+let newArray = [];
+
+
 
 
 if (localStorage.length > 0)
@@ -21,6 +23,11 @@ if (localStorage.length > 0)
        LoadingSpan.innerHTML = "\u00d7";
        LoadingElement.innerHTML = LoadingValu;
        LoadingElement.appendChild(LoadingSpan);
+       if (tasksArray[i].completed === true ) 
+       {
+        LoadingElement.className = 'checked';
+       }
+      
        ourList.appendChild(LoadingElement);
         
     }
@@ -30,6 +37,8 @@ if (localStorage.length > 0)
 input.addEventListener('change', function (){
     inputValue = input.value;
 });
+
+
 
 ourBtn.addEventListener('click', function(){
 
@@ -41,17 +50,43 @@ ourBtn.addEventListener('click', function(){
    else
 {
     saveData();
+    newArray = JSON.parse(localStorage.getItem('taskArray'));
+    console.log(newArray);
 }
 
 })
 
 
+
+
+
 ourList.addEventListener('click', function(e){
 
+    let localArray = JSON.parse(localStorage.getItem('taskArray'));
     if (e.target.tagName == "LI")
     {
-
+     
         e.target.classList.toggle('checked');
+
+        for (let i = 0; i < localArray.length; i++)
+        {
+            if (e.target.innerText.slice(0, -1).trim() == localArray[i].value.trim())
+            {
+                if (e.target.className == "checked" && localArray[i].completed == false)
+                {
+                    localArray[i].completed = true;
+                }
+                else
+                {
+                    localArray[i].completed = false;
+                }
+            }
+        }
+        localStorage.setItem(`taskArray`, JSON.stringify(localArray));
+
+
+        console.log(localArray);
+
     }
 
     else if (e.target.tagName == "SPAN")
@@ -70,7 +105,7 @@ function saveData(){
      ourItem.appendChild(ourValue);
      ourItem.appendChild(ourSpan);
      ourList.appendChild(ourItem);
-     ourArray.push({id: `${numberTask}`, value: inputValue});
+     ourArray.push({id: `${numberTask}`, value: inputValue, completed: false});
      localStorage.setItem(`taskArray`, JSON.stringify(ourArray));
      numberTask++;
      input.value = "";
